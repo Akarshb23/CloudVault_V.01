@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend development repo",
+  "homepage": "https://github.com/Akarshb23/CloudVault_V.01#readme",
+  "bugs": {
+    "url": "https://github.com/Akarshb23/CloudVault_V.01/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akarshb23/CloudVault_V.01.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.6.3",
+    "prettier": "^3.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
