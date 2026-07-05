@@ -1,19 +1,26 @@
-import dotenv from 'dotenv'
-import connectDB from './db/index.js'
-import app from './app.js'
+import dotenv from "dotenv";
+import app from "./app.js";
+import prisma from "./lib/prisma.js";
 
-// to get the data from .env file 
 dotenv.config({
-    path : "./.env"
-})
+  path: "./.env",
+});
 
-// whenever we connect a database , it returns a promise(js) so we use .then and .catch for it 
-connectDB()
-.then(()=>{ 
-    app.listen(process.env.PORT || 8000 , ()=>{
-        console.log(`server running at  port : ${process.env.PORT || 8000}`)
-    })
-})
-.catch((err)=>{
-    console.log("Mongo DB connection failed !!!" , err)
-})
+const PORT = process.env.PORT || 8000;
+
+async function startServer() {
+  try {
+    await prisma.$connect();
+    console.log("✅ Connected to PostgreSQL");
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("❌ Failed to connect to PostgreSQL");
+    console.error(error);
+    process.exit(1);
+  }
+}
+
+startServer();
