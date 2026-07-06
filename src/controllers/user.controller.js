@@ -119,4 +119,47 @@ const registerUser = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser };
+const loginUser = asyncHandler(async (req, res) => {
+    const { userName, password } = req.body;
+
+    if (
+        [userName, password].some(
+            (field) => !field || field.trim() === ""
+        )
+    ) {
+        throw new ApiError(400, "All fields are required");
+    }
+
+    // Find user
+    const user = await prisma.user.findUnique({
+        where: {
+            username: userName.toLowerCase(),
+        },
+    });
+
+    if (!user) {
+        throw new ApiError(404, "User does not exist");
+    }
+
+    // Compare password
+    const isPasswordCorrect = await bcrypt.compare(
+        password,
+        user.password
+    );
+
+    if (!isPasswordCorrect) {
+        throw new ApiError(401, "Invalid credentials");
+    }
+
+    // Remove password before sending response
+    const { password: _, ...loggedInUser } = user;
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            loggedInUser,
+            "User logged in successfully"
+        )
+    );
+});
+export { registerUser , loginUser };
